@@ -3508,6 +3508,176 @@ const replyHTML = (d) => {
   }
 });
 
+
+
+// ===============================
+// COMMAND TIKTOK
+// ===============================
+bot.command("ttdl", checkPremium, async (ctx) => {
+  try {
+    const args = ctx.message.text.split(" ").slice(1).join(" ").trim();
+
+    if (!args) {
+      return ctx.reply("🪧 Format:\n/ttdl https://vt.tiktok.com/xxxx/");
+    }
+
+    if (!/(tiktok\.com)/i.test(args)) {
+      return ctx.reply("❌ Link TikTok tidak valid!");
+    }
+
+    const url = args.trim();
+
+    await ctx.reply(
+      "📥 Pilih jenis download:",
+      {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              { text: "🎬 Video + Audio", callback_data: `tiktok|${url}|video` },
+              { text: "🌟 HD No WM", callback_data: `tiktok|${url}|hd` }
+            ],
+            [
+              { text: "🎵 Audio Saja", callback_data: `tiktok|${url}|audio` }
+            ]
+          ]
+        }
+      }
+    );
+
+  } catch (err) {
+    console.error(err);
+    ctx.reply("❌ Terjadi kesalahan.");
+  }
+});
+
+
+// ===============================
+// CALLBACK HANDLER
+// ===============================
+bot.on("callback_query", async (ctx) => {
+  try {
+    const data = ctx.callbackQuery.data;
+    if (!data.startsWith("tiktok|")) return;
+
+    const parts = data.split("|");
+    const url = parts[1];
+    const type = parts[2];
+
+    await ctx.answerCallbackQuery("⏳ Memproses...");
+    await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
+    await ctx.editMessageText(`⏳ Sedang memproses ${getTypeName(type)}...`);
+
+    const result = await downloadTikTok(url, type);
+
+    if (!result.success) {
+      return ctx.editMessageText(`❌ Gagal: ${result.error}`);
+    }
+
+    // Limit size 50MB (Telegram limit bot)
+    if (result.size > 50 * 1024 * 1024) {
+      return ctx.editMessageText("❌ File terlalu besar (Max 50MB)");
+    }
+
+    if (type === "audio") {
+      await ctx.replyWithAudio(
+        { source: Buffer.from(result.data), filename: "tiktok.mp3" },
+        { title: "TikTok Audio" }
+      );
+    } else {
+      await ctx.replyWithVideo(
+        { source: Buffer.from(result.data), filename: "tiktok.mp4" },
+        { supports_streaming: true }
+      );
+    }
+
+    await ctx.editMessageText("✅ Berhasil dikirim!");
+
+  } catch (err) {
+    console.error("CALLBACK ERROR:", err.message);
+    ctx.reply("❌ Error sistem.");
+  }
+});
+
+
+// ===============================
+// DOWNLOAD FUNCTION
+// ===============================
+async function downloadTikTok(inputUrl, type = "video") {
+  try {
+    let url = inputUrl.trim();
+
+    // Resolve vt.tiktok redirect
+    if (url.includes("vt.tiktok.com")) {
+      const res = await axios.get(url, { maxRedirects: 5 });
+      url = res.request.res.responseUrl;
+    }
+
+    // Ambil data dari tikwm
+    const { data } = await axios.get("https://www.tikwm.com/api/", {
+      params: { url },
+      timeout: 20000,
+      headers: {
+        "user-agent": "Mozilla/5.0",
+        "referer": "https://www.tikwm.com/"
+      }
+    });
+
+    if (!data || data.code !== 0 || !data.data) {
+      return { success: false, error: "Video tidak ditemukan" };
+    }
+
+    const video = data.data;
+
+    let downloadUrl;
+
+    if (type === "audio") {
+      downloadUrl = video.music || video.music_info?.play;
+    } else if (type === "hd") {
+      downloadUrl = video.play;
+    } else {
+      downloadUrl = video.play || video.wmplay;
+    }
+
+    if (!downloadUrl) {
+      return { success: false, error: "Link download tidak tersedia" };
+    }
+
+    const response = await axios.get(downloadUrl, {
+      responseType: "arraybuffer",
+      timeout: 30000,
+      headers: { "user-agent": "Mozilla/5.0" }
+    });
+
+    return {
+      success: true,
+      data: response.data,
+      size: response.data.length
+    };
+
+  } catch (err) {
+    console.error("DOWNLOAD ERROR:", err.message);
+
+    if (err.code === "ECONNABORTED") {
+      return { success: false, error: "Timeout server" };
+    }
+
+    return { success: false, error: "Gagal mengunduh video" };
+  }
+}
+
+
+// ===============================
+// HELPER
+// ===============================
+function getTypeName(type) {
+  const types = {
+    video: "Video + Audio",
+    hd: "HD No Watermark",
+    audio: "Audio"
+  };
+  return types[type] || type;
+}
+
 bot.command("csessions", checkPremium, async (ctx) => {
   const chatId = ctx.chat.id;
   const fromId = ctx.from.id;
