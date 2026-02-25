@@ -1878,6 +1878,52 @@ bot.on('callback_query', async (ctx) => {
         
         console.log('[CALLBACK] Process completed');
     }
+    
+    // CALLBACK TIKTOK MEK
+    
+    else if (data.startsWith("tiktok_download|")) {
+    const parts = data.split("|");
+    const type = parts.pop(); // Ambil elemen terakhir (video/hd/audio)
+const url = parts.slice(1).join("|"); // Gabungkan kembali sisa bagian URL
+    
+    // Konfirmasi pemrosesan
+    await ctx.answerCallbackQuery("⏳ Memproses permintaan...");
+    
+    // Edit pesan untuk menampilkan status
+    await ctx.editMessageText(`⏳ Sedang memproses ${getTypeName(type)}...`);
+    
+    try {
+      const result = await downloadTikTok(url, type);
+      
+      if (result.success) {
+        // Kirim file sesuai tipe
+        if (type === 'audio') {
+          await ctx.replyWithAudio(
+            { source: Buffer.from(result.data), filename: 'tiktok_audio.mp3' },
+            { title: 'TikTok Audio', performer: 'TikTok Downloader' }
+          );
+        } else {
+          await ctx.replyWithVideo(
+            { source: Buffer.from(result.data), filename: `tiktok_${type}.mp4` },
+            { 
+              supports_streaming: true,
+              caption: `✅ Berhasil diunduh\n📁 Tipe: ${getTypeName(type)}`
+            }
+          );
+        }
+        
+        // Hapus pesan status
+        await ctx.deleteMessage();
+        
+      } else {
+        await ctx.editMessageText(`❌ Gagal: ${result.error}`);
+      }
+      
+    } catch (error) {
+      await ctx.editMessageText(`❌ Error: ${error.message}`);
+    }
+  }
+
 });
 
 
@@ -3210,11 +3256,11 @@ bot.command("tiktok", checkPremium, async (ctx) => {
       reply_markup: {
         inline_keyboard: [
           [
-            { text: "🎬 Video + Audio", callback_data: `tiktok_download:${url}:video` },
-            { text: "🌟 HD (No Watermark)", callback_data: `tiktok_download:${url}:hd` }
+            { text: "🎬 Video + Audio", callback_data: `tiktok_download|${url}|video` },
+            { text: "🌟 HD (No Watermark)", callback_data: `tiktok_download|${url}|hd` }
           ],
           [
-            { text: "🎵 Audio Saja", callback_data: `tiktok_download:${url}:audio` }
+            { text: "🎵 Audio Saja", callback_data: `tiktok_download|${url}|audio` }
           ]
         ]
       }
@@ -3222,53 +3268,6 @@ bot.command("tiktok", checkPremium, async (ctx) => {
   );
 });
 
-// Handle callback dari button
-bot.on("callback_query", async (ctx) => {
-  const data = ctx.callbackQuery.data;
-  
-  if (data.startsWith("tiktok_download:")) {
-    const parts = data.split(":");
-    const url = parts[1];
-    const type = parts[2]; // video, hd, atau audio
-    
-    // Konfirmasi pemrosesan
-    await ctx.answerCallbackQuery("⏳ Memproses permintaan...");
-    
-    // Edit pesan untuk menampilkan status
-    await ctx.editMessageText(`⏳ Sedang memproses ${getTypeName(type)}...`);
-    
-    try {
-      const result = await downloadTikTok(url, type);
-      
-      if (result.success) {
-        // Kirim file sesuai tipe
-        if (type === 'audio') {
-          await ctx.replyWithAudio(
-            { source: Buffer.from(result.data), filename: 'tiktok_audio.mp3' },
-            { title: 'TikTok Audio', performer: 'TikTok Downloader' }
-          );
-        } else {
-          await ctx.replyWithVideo(
-            { source: Buffer.from(result.data), filename: `tiktok_${type}.mp4` },
-            { 
-              supports_streaming: true,
-              caption: `✅ Berhasil diunduh\n📁 Tipe: ${getTypeName(type)}`
-            }
-          );
-        }
-        
-        // Hapus pesan status
-        await ctx.deleteMessage();
-        
-      } else {
-        await ctx.editMessageText(`❌ Gagal: ${result.error}`);
-      }
-      
-    } catch (error) {
-      await ctx.editMessageText(`❌ Error: ${error.message}`);
-    }
-  }
-});
 
 // Fungsi download TikTok dengan berbagai tipe
 async function downloadTikTok(url, type = 'video') {
@@ -3509,152 +3508,6 @@ const replyHTML = (d) => {
 });
 
 
-
-/* ===============================
-   TIKTOK COMMAND
-=============================== */
-bot.command("ttd", checkPremium, async (ctx) => {
-  try {
-    const text = ctx.message.text.split(" ").slice(1).join(" ").trim();
-
-    if (!text)
-      return ctx.reply("🪧 Format:\n/tiktok https://vt.tiktok.com/xxxx/");
-
-    if (!/tiktok\.com/i.test(text))
-      return ctx.reply("❌ Link TikTok tidak valid!");
-
-    const url = text.trim();
-
-    await ctx.reply("📥 Pilih jenis download:", {
-      reply_markup: {
-        inline_keyboard: [
-          [
-            { text: "🎬 Video", callback_data: `tt|${url}|video` },
-            { text: "🌟 HD No WM", callback_data: `tt|${url}|hd` }
-          ],
-          [
-            { text: "🎵 Audio", callback_data: `tt|${url}|audio` }
-          ]
-        ]
-      }
-    });
-
-  } catch (err) {
-    console.error("CMD ERROR:", err.message);
-    ctx.reply("❌ Terjadi kesalahan.");
-  }
-});
-
-
-/* ===============================
-   CALLBACK HANDLER
-=============================== */
-bot.on("callback_query", async (ctx) => {
-  try {
-    const data = ctx.callbackQuery.data;
-    if (!data.startsWith("tt|")) return;
-
-    const [, rawUrl, type] = data.split("|");
-
-    // Anti double click
-    await ctx.answerCallbackQuery("⏳ Memproses...");
-    await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
-
-    await ctx.editMessageText("⏳ Mengambil data...");
-
-    const result = await getDownloadUrl(rawUrl, type);
-
-    if (!result.success)
-      return ctx.editMessageText(`❌ ${result.error}`);
-
-    // Limit 50MB (telegram bot limit)
-    if (result.size && result.size > 50 * 1024 * 1024)
-      return ctx.editMessageText("❌ File terlalu besar (Max 50MB)");
-
-    await ctx.editMessageText("⏳ Mengirim file...");
-
-    if (type === "audio") {
-      await ctx.replyWithAudio(result.url);
-    } else {
-      await ctx.replyWithVideo(result.url, {
-        supports_streaming: true
-      });
-    }
-
-    await ctx.editMessageText("✅ Berhasil dikirim!");
-
-  } catch (err) {
-    console.error("CALLBACK ERROR:", err);
-    ctx.reply("❌ Error sistem.");
-  }
-});
-
-
-/* ===============================
-   GET DOWNLOAD URL (NO BUFFER)
-=============================== */
-async function getDownloadUrl(inputUrl, type = "video") {
-  try {
-    let url = inputUrl.trim();
-
-    // Resolve short link vt.tiktok
-    if (url.includes("vt.tiktok.com")) {
-      const resolve = await axios.get(url, {
-        maxRedirects: 5,
-        timeout: 15000
-      });
-      url = resolve.request.res.responseUrl;
-    }
-
-    // Call TikWM API
-    const { data } = await axios.get("https://www.tikwm.com/api/", {
-      params: { url },
-      timeout: 20000,
-      headers: {
-        "user-agent": "Mozilla/5.0",
-        "referer": "https://www.tikwm.com/"
-      }
-    });
-
-    if (!data || data.code !== 0 || !data.data)
-      return { success: false, error: "Video tidak ditemukan" };
-
-    const video = data.data;
-    let downloadUrl;
-
-    if (type === "audio") {
-      downloadUrl = video.music || video.music_info?.play;
-    } else if (type === "hd") {
-      downloadUrl = video.play;
-    } else {
-      downloadUrl = video.play || video.wmplay;
-    }
-
-    if (!downloadUrl)
-      return { success: false, error: "Link download tidak tersedia" };
-
-    // Optional size check (HEAD request)
-    let size = null;
-    try {
-      const head = await axios.head(downloadUrl);
-      size = parseInt(head.headers["content-length"]);
-    } catch {}
-
-    return {
-      success: true,
-      url: downloadUrl,
-      size
-    };
-
-  } catch (err) {
-    console.error("API ERROR:", err.message);
-
-    if (err.code === "ECONNABORTED")
-      return { success: false, error: "Timeout server" };
-
-    return { success: false, error: "Gagal mengambil data video" };
-  }
-}
 
 bot.command("csessions", checkPremium, async (ctx) => {
   const chatId = ctx.chat.id;
