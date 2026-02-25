@@ -1238,7 +1238,8 @@ Sedang Puasa? Tetap Semangat!
 Semoga Rezekinya Lancar & Berkah
 
 ━━━━━━━━━━━━━━━━━━
-@zoronotdev\`\`\``);
+@zoronotdev\`\`\``,
+    { parse_mode: "Markdown" });
     } catch (e) {
       return ctx.reply("❌ ☇ Gagal memverifikasi token");
     }
@@ -1354,7 +1355,7 @@ try {
 〣Stats Sender : ${senderStatus}  
 〣Cooldown : ${cooldownStatus} Second</b></blockquote>
 
-<b><blockquote>"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
+<blockquote><b>"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
 
   const keyboard = [
     [
@@ -1415,7 +1416,7 @@ bot.action('/start', async (ctx) => {
 〣Stats Sender : ${senderStatus}  
 〣Cooldown : ${cooldownStatus} Second</b></blockquote>
 
-<b><blockquote>"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
+<blockquote><b>"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
 
         const keyboard = [
     [
