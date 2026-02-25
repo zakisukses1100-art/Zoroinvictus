@@ -1221,7 +1221,7 @@ bot.start(async (ctx) => {
       }
 
       tokenValidated = true;
-      return ctx.reply(`\`\`\`\`js
+      return ctx.reply(`\`\`\`js
 TOKEN VALID
 ━━━━━━━━━━━━━━━━━━
 Assalamualaikum 
