@@ -162,11 +162,11 @@ const GITHUB_TOKEN = "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";
 
 const databaseUrl = `https://raw.githubusercontent.com/Wolfraor-cell/Database/main/Token.json`;
 
-  const thumbnailUrl = "https://files.catbox.moe/e5qws0.jpg"; // FOTO PAS Kirim Bug
+  const thumbnailUrl = "https://files.catbox.moe/je21o7.jpg"; // FOTO PAS Kirim Bug
   
-  const StartUrl = "https://files.catbox.moe/kai9m4.mp4"; // FOTO PAS START
+  const StartUrl = "https://files.catbox.moe/4vdyz9.mp4"; // FOTO PAS START
   
-  const menuUrl = "https://files.catbox.moe/tcffi8.jpg"; // FOTO MENU
+  const menuUrl = "https://files.catbox.moe/je21o7.jpg"; // FOTO MENU
   
   const bugUrl = "https://files.catbox.moe/sc29y6.jpg"; // FOTO MENU BUG
   
@@ -1342,7 +1342,7 @@ try {
   const runtimeStatus = formatRuntime();
   const memoryStatus = formatMemory();
   const cooldownStatus = loadCooldown();
-  const username = msg.from.username ? `@${msg.from.username}` : "Tidak ada username";
+  const username = ctx.from?.username ? `@${ctx.from.username}` : "Tidak ada username";
 
   const menuMessage = `
 <blockquote><b>Olâa ${ctx.from.first_name}</b></blockquote>
@@ -1353,7 +1353,7 @@ try {
 ⌬ Prefix : /  
 ⌬ Language : JavaScript
 ⌬ Type : Telegraf
-<blockquote><b>╘═—————————————–——═⬡</b></blockquote>
+╘═—————————————–——═⬡
 
 <blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote>
 ⌬ Stats Premium : ${premiumStatus}  
@@ -1362,7 +1362,8 @@ try {
 ⌬ Memory : ${memoryStatus}
 ⌬ Cooldown : ${cooldownStatus} Second
 ⌬ Win Rate Puasa : 100%
-<blockquote><b>╘═—————————————–——═⬡</b></blockquote>
+╘═—————————————–——═⬡
+
 © Zoro Invictus New Era
 <blockquote><b>"Thanks Ramadhan Kareem"</b></blockquote>`;
 
@@ -1432,7 +1433,8 @@ bot.action('/start', async (ctx) => {
 ⌬ Memory : ${memoryStatus}
 ⌬ Cooldown : ${cooldownStatus} Second
 ⌬ Win Rate Puasa : 100%
-<blockquote><b>╘═—————————————–——═⬡</b></blockquote>
+╘═—————————————–——═⬡
+
 © Zoro Invictus New Era
 <blockquote><b>"Thanks Ramadhan Kareem"</b></blockquote>`;
 
