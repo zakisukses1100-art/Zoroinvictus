@@ -1221,7 +1221,24 @@ bot.start(async (ctx) => {
       }
 
       tokenValidated = true;
-      return ctx.reply("🔐Token telah terverifikasi /start Untuk membuka menu");
+      return ctx.reply(`\`\`\`\`js
+TOKEN VALID
+━━━━━━━━━━━━━━━━━━
+Assalamualaikum 
+Zoro Invictus
+
+ Script Berkualitas
+ Sistem Powerful & Stabil
+ Fitur Lengkap & Premium
+
+ Price Script : 30.000
+ Reseller : 35.000
+
+Sedang Puasa? Tetap Semangat!
+Semoga Rezekinya Lancar & Berkah
+
+━━━━━━━━━━━━━━━━━━
+@zoronotdev\`\`\``);
     } catch (e) {
       return ctx.reply("❌ ☇ Gagal memverifikasi token");
     }
@@ -1330,24 +1347,26 @@ try {
 - ZORO</b></blockquote>
 <blockquote><b>〣Developer : @zoronotdev 
 〣Version : Gen 1 V1
+〣Type : Telegraf
+〣Win Rate Puasa : 100%
 〣Kondisi Zoro : Mana Maghrib Nya
 〣Stats Premium : ${premiumStatus}  
 〣Stats Sender : ${senderStatus}  
-〣Cooldown : ${cooldownStatus} Second
+〣Cooldown : ${cooldownStatus} Second</b></blockquote>
 
-"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
+<b><blockquote>"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
 
   const keyboard = [
     [
       { text: "⌜🛠⌟ Tools Menu", callback_data: "/controls", style: "Danger"},
-      { text: "⌜🧬⌟ Attack & Access", callback_data: "/bug", style: "Success"}
+      { text: "⌜🦠⌟ Attack & Access", callback_data: "/bug", style: "Success"}
     ],
     [ 
       { text: "⌜🫂⌟ Thanks To", callback_data: "/tqto", style: "Primary" }
     ],
     [
       { text: "⌜👑⌟ Developer", url: "t.me/ZORONOTDEV" },
-      { text: "⌜👾⌟ Information Script", url: "t.me/zoronewinfo" }
+      { text: "⌜📰⌟ Information Script", url: "t.me/zoronewinfo" }
     ]
   ];
 
@@ -1389,24 +1408,26 @@ bot.action('/start', async (ctx) => {
 - ZORO</b></blockquote>
 <blockquote><b>〣Developer : @zoronotdev 
 〣Version : Gen 1 V1
+〣Type : Telegraf
+〣Win Rate Puasa : 100%
 〣Kondisi Zoro : Mana Maghrib Nya
 〣Stats Premium : ${premiumStatus}  
 〣Stats Sender : ${senderStatus}  
-〣Cooldown : ${cooldownStatus} Second
+〣Cooldown : ${cooldownStatus} Second</b></blockquote>
 
-"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
+<b><blockquote>"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
 
         const keyboard = [
     [
       { text: "⌜🛠⌟ Tools Menu", callback_data: "/controls", style: "Danger"},
-      { text: "⌜🧬⌟ Attack & Access", callback_data: "/bug", style: "Success"}
+      { text: "⌜🦠⌟ Attack & Access", callback_data: "/bug", style: "Success"}
     ],
     [ 
       { text: "⌜🫂⌟ Thanks To", callback_data: "/tqto", style: "Primary" }
     ],
     [
       { text: "⌜👑⌟ Developer", url: "t.me/ZORONOTDEV" },
-      { text: "⌜👾⌟ Information Script", url: "t.me/zoronewinfo" }
+      { text: "⌜📰⌟ Information Script", url: "t.me/zoronewinfo" }
     ]
   ];
 
