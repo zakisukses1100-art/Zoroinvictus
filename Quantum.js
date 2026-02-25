@@ -1342,26 +1342,29 @@ try {
   const runtimeStatus = formatRuntime();
   const memoryStatus = formatMemory();
   const cooldownStatus = loadCooldown();
+  const username = msg.from.username ? `@${msg.from.username}` : "Tidak ada username";
 
   const menuMessage = `
 <blockquote><b>Olâa ${ctx.from.first_name}</b></blockquote>
 <blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote>
-⛧ Developer : @zoronotdev  
-⛧ Version : 4.0.0
-⛧ Prefix : /  
-⛧ Language : JavaScript
-⛧ Type : Telegraf
-<blockquote><b>╘═—————————————–——═⬡</b></blockquote>
-<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote>
-⛧ Stats Premium : ${premiumStatus}  
-⛧ Stats Sender : ${senderStatus}  
-⛧ Runtime : ${runtimeStatus}
-⛧ Memory : ${memoryStatus}
-⛧ Cooldown : ${cooldownStatus} Second
-⛧ Win Rate Puasa : 100%
+⌬ Developer : @zoronotdev  
+⌬ Username : ${username}
+⌬ Version : 4.0.0
+⌬ Prefix : /  
+⌬ Language : JavaScript
+⌬ Type : Telegraf
 <blockquote><b>╘═—————————————–——═⬡</b></blockquote>
 
-<blockquote><b>"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
+<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote>
+⌬ Stats Premium : ${premiumStatus}  
+⌬ Stats Sender : ${senderStatus}  
+⌬ Runtime : ${runtimeStatus}
+⌬ Memory : ${memoryStatus}
+⌬ Cooldown : ${cooldownStatus} Second
+⌬ Win Rate Puasa : 100%
+<blockquote><b>╘═—————————————–——═⬡</b></blockquote>
+© Zoro Invictus New Era
+<blockquote><b>"Thanks Ramadhan Kareem"</b></blockquote>`;
 
   const keyboard = [
     [
@@ -1372,8 +1375,8 @@ try {
       { text: "⌜🫂⌟ Thanks To", callback_data: "/tqto", style: "Primary" }
     ],
     [
-      { text: "⌜👑⌟ Developer", url: "t.me/ZORONOTDEV" },
-      { text: "⌜📰⌟ Information Script", url: "t.me/zoronewinfo" }
+      { text: "⌜🕷⌟ Developer", url: "t.me/ZORONOTDEV", style: "success"},
+      { text: "⌜📰⌟ Information Script", url: "t.me/zoronewinfo", style: "primary"}
     ]
   ];
 
@@ -1409,26 +1412,29 @@ bot.action('/start', async (ctx) => {
         const runtimeStatus = formatRuntime();
         const memoryStatus = formatMemory();
         const cooldownStatus = loadCooldown();
+        const username = msg.from.username ? `@${msg.from.username}` : "Tidak ada username";
 
         const menuMessage = `
 <blockquote><b>Olâa ${ctx.from.first_name}</b></blockquote>
 <blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote>
-⛧ Developer : @zoronotdev  
-⛧ Version : 4.0.0
-⛧ Prefix : /  
-⛧ Language : JavaScript
-⛧ Type : Telegraf
-<blockquote><b>╘═—————————————–——═⬡</b></blockquote>
-<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote>
-⛧ Stats Premium : ${premiumStatus}  
-⛧ Stats Sender : ${senderStatus}  
-⛧ Runtime : ${runtimeStatus}
-⛧ Memory : ${memoryStatus}
-⛧ Cooldown : ${cooldownStatus} Second
-⛧ Win Rate Puasa : 100%
+⌬ Developer : @zoronotdev  
+⌬ Username : ${username}
+⌬ Version : 4.0.0
+⌬ Prefix : /  
+⌬ Language : JavaScript
+⌬ Type : Telegraf
 <blockquote><b>╘═—————————————–——═⬡</b></blockquote>
 
-<blockquote><b>"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
+<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote>
+⌬ Stats Premium : ${premiumStatus}  
+⌬ Stats Sender : ${senderStatus}  
+⌬ Runtime : ${runtimeStatus}
+⌬ Memory : ${memoryStatus}
+⌬ Cooldown : ${cooldownStatus} Second
+⌬ Win Rate Puasa : 100%
+<blockquote><b>╘═—————————————–——═⬡</b></blockquote>
+© Zoro Invictus New Era
+<blockquote><b>"Thanks Ramadhan Kareem"</b></blockquote>`;
 
         const keyboard = [
     [
@@ -1439,8 +1445,8 @@ bot.action('/start', async (ctx) => {
       { text: "⌜🫂⌟ Thanks To", callback_data: "/tqto", style: "Primary" }
     ],
     [
-      { text: "⌜👑⌟ Developer", url: "t.me/ZORONOTDEV" },
-      { text: "⌜📰⌟ Information Script", url: "t.me/zoronewinfo" }
+      { text: "⌜🕷⌟ Developer", url: "t.me/ZORONOTDEV", style: "success"},
+      { text: "⌜📰⌟ Information Script", url: "t.me/zoronewinfo", style: "primary"}
     ]
   ];
 
