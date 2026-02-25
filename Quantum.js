@@ -1475,7 +1475,7 @@ bot.action('/controls', async (ctx) => {
                 style: "Danger"
             },
             {
-                text: "⌜🔜⌟ 𝗡𝗲𝘅𝘁", callback_data: "/toolss", style: "Success"
+                text: "⌜🔜⌟ 𝗡𝗲𝘅𝘁 𝗧𝗼𝗼𝗹𝘀 𝗩𝟮", callback_data: "/toolss", style: "Success"
             }
         ]
     ];
@@ -1516,6 +1516,8 @@ bot.action('/toolss', async (ctx) => {
 〣 /cekfile - Cek Nokos Via File
 〣 /cekgaleri - Cek Galeri WA
 〣 /cekkontak - Cek Kontak
+〣 /toblur - blur foto
+〣 /info - your id
 〣 /videy - Bokep Lagi Ni memek</b></blockquote>
 
 `;
@@ -3252,6 +3254,37 @@ bot.command("trackip", checkPremium, async (ctx) => {
   }
 });
 
+// Command /cekid
+bot.command("cekid", async (ctx) => {
+    const chatId = ctx.chat.id;
+    
+    try {
+        // Ambil teks setelah command
+        const text = ctx.message.text.split(" ").slice(1).join(" ");
+        
+        if (!text) {
+            return ctx.reply("⚠ Gunakan: /cekid https://whatsapp.com/channel/xxxx");
+        }
+
+        if (!text.includes("whatsapp.com/channel/")) {
+            return ctx.reply("❌ Link WhatsApp Channel tidak valid!");
+        }
+
+        let channelId = text.split("channel/")[1].split(/[/?]/)[0];
+        let newsletterJid = channelId + "@newsletter";
+
+        await ctx.reply(
+`✅ Newsletter ID ditemukan:
+
+${newsletterJid}`
+        );
+
+    } catch (err) {
+        console.log(err);
+        ctx.reply("Terjadi error saat proses.");
+    }
+});
+
 bot.command("tiktok", checkPremium, async (ctx) => {
   const args = ctx.message.text.split(" ").slice(1).join(" ").trim();
   if (!args) return ctx.reply("🪧 Format: /tiktok https://vt.tiktok.com/ZSUeF1CqC/");
@@ -3731,6 +3764,125 @@ bot.command("csessions", checkPremium, async (ctx) => {
     }
   } catch (err) {
     ctx.reply("❌ ☇ Terjadi error saat scan");
+  }
+});
+
+
+bot.command("toblur", async (ctx) => {
+  const reply = ctx.message.reply_to_message;
+  if (!reply || !reply.photo)
+    return ctx.reply("❌ Reply ke foto dulu!");
+
+  try {
+    const loading = await ctx.reply("⏳ Memproses blur...");
+
+    const photo = reply.photo.at(-1);
+    const fileLink = await ctx.telegram.getFileLink(photo.file_id);
+
+    await ctx.telegram.editMessageText(ctx.chat.id, loading.message_id, null, "✅ Blur selesai, mengirim foto...");
+    await ctx.replyWithPhoto({ url: `https://ikyyzyyrestapi.my.id/image/blur?url=${encodeURIComponent(fileLink.href)}` });
+
+  } catch (err) {
+    console.error(err);
+    ctx.reply("❌ Gagal memproses foto!");
+  }
+});
+
+bot.command(["telestalk", "cekid", "info"], async (ctx) => {
+  try {
+    let username = ctx.message.text.split(" ")[1];
+    if (!username)
+      return ctx.reply(
+        "Masukkan username!\nExample: /telestalk @Ikyydevxy\nExample: /cekid @Ikyydevxy\nExample: /info @Ikyydevxy"
+      );
+
+    username = username.replace("@", "");
+    
+    ctx.reply("📝 Tunggu Sebentar...");
+
+    const apiUrl = `https://ikyyzyyrestapi.my.id/tools/telegram/stalk?username=@${username}`;
+    const { data } = await axios.get(apiUrl);
+
+    if (!data.status) return ctx.reply("User tidak ditemukan!");
+
+const res = data.result;
+const escapeHTML = (text) => {
+  if (!text) return "-";
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+};
+
+    let mediaLinks = [];
+    let sendMedia = null;
+    let isVideo = false;
+
+    if (res.profile_media) {
+      const photos = res.profile_media.photos || [];
+      const videos = res.profile_media.videos || [];
+
+      mediaLinks = [...videos, ...photos];
+      if (videos.length > 0) {
+        sendMedia = videos[0];
+        isVideo = true;
+      } else if (photos.length > 0) {
+        sendMedia = photos[0];
+      }
+    }
+
+    const mediaInfo = mediaLinks.length
+      ? `\n\nProfile:\n${mediaLinks.join("\n")}`
+      : "";
+const caption = `
+<blockquote><b>TELEGRAM STALK</b></blockquote>
+
+<b>ID:</b> ${escapeHTML(res.id)}
+<b>Username:</b> @${escapeHTML(res.username || "-")}
+<b>Name:</b> ${escapeHTML(res.name)}
+<b>Bio:</b> ${escapeHTML(res.bio || "-")}
+<b>Verified:</b> ${res.verified}
+<b>Scam:</b> ${res.scam}
+<b>Fake:</b> ${res.fake}
+<b>Restricted:</b> ${res.restricted}
+
+${mediaLinks.length ? "\n<b>Profile:</b>\n" + mediaLinks.join("\n") : ""}
+`;
+
+    const keyboard = {
+      inline_keyboard: [
+        [
+          {
+            text: "📋 Copy User ID",
+            copy_text: { text: String(res.id) }
+          }
+        ]
+      ]
+    };
+
+    if (sendMedia) {
+      if (isVideo) {
+        await ctx.replyWithVideo(sendMedia, {
+          caption,
+          parse_mode: "HTML",
+          reply_markup: keyboard
+        });
+      } else {
+        await ctx.replyWithPhoto(sendMedia, {
+          caption,
+          parse_mode: "HTML",
+          reply_markup: keyboard
+        });
+      }
+    } else {
+      await ctx.reply(caption, {
+        parse_mode: "HTML",
+        reply_markup: keyboard
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    ctx.reply("Terjadi kesalahan!");
   }
 });
 
