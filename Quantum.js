@@ -1344,16 +1344,22 @@ try {
   const cooldownStatus = loadCooldown();
 
   const menuMessage = `
-<blockquote><b>Olâa ${ctx.from.first_name}
-- ZORO</b></blockquote>
-<blockquote><b>〣Developer : @zoronotdev 
-〣Version : Gen 1 V1
-〣Type : Telegraf
-〣Win Rate Puasa : 100%
-〣Kondisi Zoro : Mana Maghrib Nya
-〣Stats Premium : ${premiumStatus}  
-〣Stats Sender : ${senderStatus}  
-〣Cooldown : ${cooldownStatus} Second</b></blockquote>
+<blockquote><b>Olâa ${ctx.from.first_name}</b></blockquote>
+
+<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote
+⛧ Developer : @zoronotdev  
+⛧ Version : 4.0.0
+⛧ Prefix : /  
+⛧ Language : JavaScript
+⛧ Type : Telegraf
+<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote
+⛧ Stats Premium : ${premiumStatus}  
+⛧ Stats Sender : ${senderStatus}  
+⛧ Runtime : ${runtimeStatus}
+⛧ Memory : ${memoryStatus}
+⛧ Cooldown : ${cooldownStatus} Second
+⛧ Win Rate Puasa : 100%
+
 
 <blockquote><b>"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
 
@@ -1405,16 +1411,22 @@ bot.action('/start', async (ctx) => {
         const cooldownStatus = loadCooldown();
 
         const menuMessage = `
-<blockquote><b>Olâa ${ctx.from.first_name}
-- ZORO</b></blockquote>
-<blockquote><b>〣Developer : @zoronotdev 
-〣Version : Gen 1 V1
-〣Type : Telegraf
-〣Win Rate Puasa : 100%
-〣Kondisi Zoro : Mana Maghrib Nya
-〣Stats Premium : ${premiumStatus}  
-〣Stats Sender : ${senderStatus}  
-〣Cooldown : ${cooldownStatus} Second</b></blockquote>
+<blockquote><b>Olâa ${ctx.from.first_name}</b></blockquote>
+
+<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote
+⛧ Developer : @zoronotdev  
+⛧ Version : 4.0.0
+⛧ Prefix : /  
+⛧ Language : JavaScript
+⛧ Type : Telegraf
+<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote
+⛧ Stats Premium : ${premiumStatus}  
+⛧ Stats Sender : ${senderStatus}  
+⛧ Runtime : ${runtimeStatus}
+⛧ Memory : ${memoryStatus}
+⛧ Cooldown : ${cooldownStatus} Second
+⛧ Win Rate Puasa : 100%
+
 
 <blockquote><b>"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
 
