@@ -1887,7 +1887,7 @@ bot.on('callback_query', async (ctx) => {
 const url = parts.slice(1).join("|"); // Gabungkan kembali sisa bagian URL
     
     // Konfirmasi pemrosesan
-    await ctx.answerCallbackQuery("⏳ Memproses permintaan...");
+    await ctx.answerCbQuery("⏳ Memproses permintaan...");
     
     // Edit pesan untuk menampilkan status
     await ctx.editMessageText(`⏳ Sedang memproses ${getTypeName(type)}...`);
