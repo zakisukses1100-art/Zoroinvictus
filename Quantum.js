@@ -2009,6 +2009,58 @@ bot.command("spotifyplay", checkPremium, async (ctx) => {
   }
 });
 
+
+bot.command('iqc', async (ctx) => {
+  try {
+    const chatId = ctx.chat.id;
+
+    // Ambil text setelah command
+    const text = ctx.message.text.split(' ').slice(1).join(' ');
+
+    if (!text) {
+      return ctx.reply(
+        "⚠ Gunakan: `/iqc jam|batre|carrier|pesan`\nContoh: `/iqc 18:00|40|Indosat|hai hai`",
+        { parse_mode: "Markdown" }
+      );
+    }
+
+    let [time, battery, carrier, ...msgParts] = text.split("|");
+
+    if (!time || !battery || !carrier || msgParts.length === 0) {
+      return ctx.reply(
+        "⚠ Format salah!\nGunakan: `/iqc jam|batre|carrier|pesan`\nContoh: `/iqc 18:00|40|Indosat|hai hai`",
+        { parse_mode: "Markdown" }
+      );
+    }
+
+    await ctx.reply("⏳ Tunggu sebentar...");
+
+    const messageText = encodeURIComponent(msgParts.join("|").trim());
+
+    const url = `https://brat.siputzx.my.id/iphone-quoted?time=${encodeURIComponent(time)}&batteryPercentage=${battery}&carrierName=${encodeURIComponent(carrier)}&messageText=${messageText}&emojiStyle=apple`;
+
+    const res = await fetch(url);
+    if (!res.ok) {
+      return ctx.reply("❌ Gagal mengambil data dari API.");
+    }
+
+    const arrayBuffer = await res.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    await ctx.replyWithPhoto(
+      { source: buffer },
+      {
+        caption: "✅ Nih hasilnya",
+        parse_mode: "Markdown"
+      }
+    );
+
+  } catch (err) {
+    console.error(err);
+    ctx.reply("❌ Terjadi kesalahan saat menghubungi API.");
+  }
+});
+
 bot.command("videy", async (ctx) => {
     const input = ctx.message.text.split(" ").slice(1).join(" ");
     
