@@ -1345,21 +1345,21 @@ try {
 
   const menuMessage = `
 <blockquote><b>Olâa ${ctx.from.first_name}</b></blockquote>
-
-<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote
+<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote>
 ⛧ Developer : @zoronotdev  
 ⛧ Version : 4.0.0
 ⛧ Prefix : /  
 ⛧ Language : JavaScript
 ⛧ Type : Telegraf
-<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote
+<blockquote><b>╘═—————————————–——═⬡</b></blockquote>
+<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote>
 ⛧ Stats Premium : ${premiumStatus}  
 ⛧ Stats Sender : ${senderStatus}  
 ⛧ Runtime : ${runtimeStatus}
 ⛧ Memory : ${memoryStatus}
 ⛧ Cooldown : ${cooldownStatus} Second
 ⛧ Win Rate Puasa : 100%
-
+<blockquote><b>╘═—————————————–——═⬡</b></blockquote>
 
 <blockquote><b>"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
 
@@ -1412,21 +1412,21 @@ bot.action('/start', async (ctx) => {
 
         const menuMessage = `
 <blockquote><b>Olâa ${ctx.from.first_name}</b></blockquote>
-
-<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote
+<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote>
 ⛧ Developer : @zoronotdev  
 ⛧ Version : 4.0.0
 ⛧ Prefix : /  
 ⛧ Language : JavaScript
 ⛧ Type : Telegraf
-<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote
+<blockquote><b>╘═—————————————–——═⬡</b></blockquote>
+<blockquote><b>⬡═―—⊱ ⎧ Zoro Invictus ⎭ ⊰―—═⬡</b></blockquote>
 ⛧ Stats Premium : ${premiumStatus}  
 ⛧ Stats Sender : ${senderStatus}  
 ⛧ Runtime : ${runtimeStatus}
 ⛧ Memory : ${memoryStatus}
 ⛧ Cooldown : ${cooldownStatus} Second
 ⛧ Win Rate Puasa : 100%
-
+<blockquote><b>╘═—————————————–——═⬡</b></blockquote>
 
 <blockquote><b>"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
 
@@ -1476,7 +1476,8 @@ bot.action('/controls', async (ctx) => {
 〣 /brat - Quotes Sticker
 〣 /yt - YouTube Search
 〣 /gethtml - Get Code HTML
-〣 /cekefek - Checking Effect Function</b></blockquote>
+〣 /cekefek - Checking Effect Function
+╘═—————————————–——═⬡</b></blockquote>
 `;
 
     const keyboard = [
@@ -1530,7 +1531,8 @@ bot.action('/toolss', async (ctx) => {
 〣 /cekkontak - Cek Kontak
 〣 /toblur - blur foto
 〣 /info - your id
-〣 /videy - Bokep Lagi Ni memek</b></blockquote>
+〣 /videy - Bokep Lagi Ni memek
+╘═—————————————–——═⬡</b></blockquote>
 
 `;
 
