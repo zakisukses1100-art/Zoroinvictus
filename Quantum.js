@@ -1,4 +1,4 @@
-const { Telegraf } = require("telegraf");
+const { Telegraf, Markup} = require("telegraf");
 const { spawn } = require('child_process');
 const { pipeline } = require('stream/promises');
 const { createWriteStream } = require('fs');
@@ -96,7 +96,7 @@ const {
   jidEncode,
   patchMessageBeforeSending,
   encodeNewsletterMessage,
-} = require("xatabail");
+} = require("@bellachu/baileys");
 const pino = require('pino');
 const crypto = require('crypto');
 const chalk = require('chalk');
@@ -155,12 +155,12 @@ const ev = new EventEmitter()
   }
 }
 
-const OWNER = "Wolfraor-cell"; 
+const OWNER = "zakisukses1100-art"; 
 const REPO = "Database";
-const TOKEN_FILE = "Tokenjson"; 
+const TOKEN_FILE = "Token.json"; 
 const GITHUB_TOKEN = "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";
 
-const databaseUrl = `https://raw.githubusercontent.com/Wolfraor-cell/Database/main/Token.json`;
+const databaseUrl = `https://raw.githubusercontent.com/zakisukses1100-art/Database/main/Token.json`;
 
   const thumbnailUrl = "https://files.catbox.moe/je21o7.jpg"; // FOTO PAS Kirim Bug
   
@@ -497,9 +497,9 @@ bot.use((ctx, next) => {
 
   if (!tokenValidated && !(isStartText || isStartCallback)) {
     if (ctx.callbackQuery) {
-      try { ctx.answerCbQuery("🔒 ☇ Akses terkunci — validasi token lewat /start <token>"); } catch (e) {}
+      try { ctx.answerCbQuery("🔒 ☇ Akses terkunci — validasi token lewat /start "); } catch (e) {}
     }
-    return ctx.reply("🔒 ☇ Akses terkunci. Ketik /start <token> untuk mengaktifkan bot.");
+    return ctx.reply("🔒 ☇ Akses terkunci. Ketik /start  untuk mengaktifkan bot.");
   }
   return next();
 });
@@ -1215,33 +1215,79 @@ bot.use((ctx, next) => {
 
     if (!tokenValidated && !isStart) {
         if (ctx.callbackQuery) {
-            try { ctx.answerCbQuery("🔑 ☇ Masukkan token anda untuk diaktifkan, Format: /start <token>"); } catch (e) {}
+            try { ctx.answerCbQuery("🔑 ☇ Masukkan token anda untuk diaktifkan, Format: /start "); } catch (e) {}
         }
-        return ctx.reply("🔒 ☇ Akses terkunci ketik /start <token> untuk mengaktifkan bot");
+        return ctx.reply("🔒 ☇ Akses terkunci ketik /start  untuk mengaktifkan bot");
     }
     return next();
 });
 
 bot.start(async (ctx) => {
   if (!tokenValidated) {
-    const raw = ctx.message && ctx.message.text ? ctx.message.text : "";
-    const parts = raw.trim().split(" ");
-    const userToken = parts.length > 1 ? parts[1].trim() : "";
 
-    if (!userToken) {
-      return ctx.reply("🔑 ☇ Masukkan token anda untuk diaktifkan, Format: /start <token>");
-    }
+    const msg = await ctx.reply("🔐 Verifikasi Token Server...\n▱▱▱▱▱▱▱▱▱▱ 0%");
+
+    function createBar(percent) {
+  const total = 10;
+  const filled = Math.floor(percent / 10);
+  const empty = total - filled;
+  return "▰".repeat(filled) + "▱".repeat(empty);
+}
+
+const progressList = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
+for (let p of progressList) {
+  await new Promise(r => setTimeout(r, 250));
+
+  await ctx.telegram.editMessageText(
+    ctx.chat.id,
+    msg.message_id,
+    null,
+    `🔐 Verifikasi Token Server...\n${createBar(p)} ${p}%`
+  );
+}
 
     try {
       const res = await axios.get(databaseUrl);
       const tokens = (res.data && res.data.tokens) || [];
 
-      if (!tokens.includes(userToken) || userToken !== tokenBot) {
-        return ctx.reply("❌ ☇ Token tidak terdaftar, masukkan yang valid");
+      
+      if (!tokens.includes(tokenBot)) {
+        return ctx.telegram.editMessageText(
+          ctx.chat.id,
+          msg.message_id,
+          null,
+          `
+<blockquote><b><tg-emoji emoji-id="4958526153955476488">❌</tg-emoji> TOKEN INVALID</b></blockquote>
+<pre>
+━━━━━━━━━━━━━━━━━━
+Akses Ditolak
+
+Bot tidak terdaftar
+di database server
+
+Silakan hubungi developer
+
+━━━━━━━━━━━━━━━━━━
+@zoronotdev
+</pre>
+`,
+          { parse_mode: "HTML" }
+        );
       }
 
+      // ✅ TOKEN VALID
       tokenValidated = true;
-      return ctx.reply(`\`\`\`js
+
+      await ctx.telegram.editMessageText(
+        ctx.chat.id,
+        msg.message_id,
+        null,
+        "✅ Verifikasi berhasil"
+      );
+
+    
+     await ctx.reply(`\`\`\`js
 TOKEN VALID
 ━━━━━━━━━━━━━━━━━━
 Assalamualaikum 
@@ -1259,104 +1305,109 @@ Semoga Rezekinya Lancar & Berkah
 
 ━━━━━━━━━━━━━━━━━━
 @zoronotdev\`\`\``,
-    { parse_mode: "Markdown" });
+      { parse_mode: "Markdown" });
+
     } catch (e) {
-      return ctx.reply("❌ ☇ Gagal memverifikasi token");
+      return ctx.telegram.editMessageText(
+        ctx.chat.id,
+        msg.message_id,
+        null,
+        "❌ ☇ Gagal memverifikasi ke database"
+      );
     }
-  }
+ }
 
   try {
-await ctx.telegram.setMessageReaction(
-  ctx.chat.id,
-  ctx.message.message_id,
-  [
-    {
-      type: "emoji",
-      emoji: "👾"
-    }
-  ],
-  true
-)
-    
+    await ctx.telegram.setMessageReaction(
+      ctx.chat.id,
+      ctx.message.message_id,
+      [
+        {
+          type: "emoji",
+          emoji: "👾"
+        }
+      ],
+      true
+    );
+
     console.log("Bot Jalan");
   } catch (error) {
     console.error("Gagal react:", error);
   }
 
-  // 3. JEDA 3 DETIK (Efek dramatis setelah react)
   await new Promise(resolve => setTimeout(resolve, 3000));
 
-
   const loadingMessage = await ctx.reply("🕷️ <b>ZORO INVICTUS Initializing...</b>", {
-  parse_mode: "HTML"
-});
+    parse_mode: "HTML"
+  });
 
-const loadingFrames = [
-  { 
-    text: `🕸️ <b>System Spinning...</b>
+  const loadingFrames = [
+    { 
+      text: `🕸️ <b>System Spinning...</b>
 <code>[▰▱▱▱▱▱▱▱▱]</code> <b>10%</b>
 ┌─ <i>Zoro Core Booting</i> ─┐`, 
-    delay: 250 
-  },
-  { 
-    text: `👁️ <b>Vision Active...</b>
+      delay: 250 
+    },
+    { 
+      text: `👁️ <b>Vision Active...</b>
 <code>[▰▰▰▱▱▱▱▱▱]</code> <b>30%</b>
 ├─ <i>Neural Networks Syncing</i> ┤`, 
-    delay: 250 
-  },
-  { 
-    text: `⚰️ <b>Cryptic Protocols Enabled...</b>
+      delay: 250 
+    },
+    { 
+      text: `⚰️ <b>Cryptic Protocols Enabled...</b>
 <code>[▰▰▰▰▰▱▱▱▱]</code> <b>50%</b>
 ├─ <i>Dark Web Interface Online</i> ┤`, 
-    delay: 250 
-  },
-  { 
-    text: `🧬 <b>Temporal Scanning...</b>
+      delay: 250 
+    },
+    { 
+      text: `🧬 <b>Temporal Scanning...</b>
 <code>[▰▰▰▰▰▰▰▱▱]</code> <b>70%</b>
 ├─ <i>Future Probability: 98.7%</i> ┤`, 
-    delay: 250 
-  },
-  { 
-    text: `👑 <b>Royal Protocol Active...</b>
+      delay: 250 
+    },
+    { 
+      text: `👑 <b>Royal Protocol Active...</b>
 <code>[▰▰▰▰▰▰▰▰▱]</code> <b>90%</b>
 ├─ <i>King ZORO</i> ┤`, 
-    delay: 300 
-  },
-  { 
-    text: `🖤 <b>ZORO INVICTUS ACTIVE</b>
+      delay: 300 
+    },
+    { 
+      text: `🖤 <b>ZORO INVICTUS ACTIVE</b>
 <code>[▰▰▰▰▰▰▰▰▰]</code> <b>100%</b>
 └─ <i>System Status: ACTIVE</i> ┘
 ══════════════════════════
 <code>ACCESS GRANTED • WELCOME, USER</code>`, 
-    delay: 400 
-  }
-];
-
-for (const frame of loadingFrames) {
-  try {
-    await ctx.telegram.editMessageText(
-      ctx.chat.id,
-      loadingMessage.message_id,
-      null,
-      frame.text,
-      { parse_mode: "HTML" }
-    );
-    await new Promise(resolve => setTimeout(resolve, frame.delay));
-  } catch (error) {
-    if (error.response && error.response.error_code === 400 && 
-        error.response.description.includes('message is not modified')) {
-      continue;
+      delay: 400 
     }
-    console.error("Error editing loading message:", error);
-  }
-}
+  ];
 
-await new Promise(resolve => setTimeout(resolve, 500));
-try {
-  await ctx.telegram.deleteMessage(ctx.chat.id, loadingMessage.message_id);
-} catch (deleteError) {
-  console.error("Error deleting loading message:", deleteError);
-}
+  for (const frame of loadingFrames) {
+    try {
+      await ctx.telegram.editMessageText(
+        ctx.chat.id,
+        loadingMessage.message_id,
+        null,
+        frame.text,
+        { parse_mode: "HTML" }
+      );
+      await new Promise(resolve => setTimeout(resolve, frame.delay));
+    } catch (error) {
+      if (error.response && error.response.error_code === 400 && 
+          error.response.description.includes('message is not modified')) {
+        continue;
+      }
+      console.error("Error editing loading message:", error);
+    }
+  }
+
+  await new Promise(resolve => setTimeout(resolve, 500));
+  try {
+    await ctx.telegram.deleteMessage(ctx.chat.id, loadingMessage.message_id);
+  } catch (deleteError) {
+    console.error("Error deleting loading message:", deleteError);
+  }
+
   const premiumStatus = isPremiumUser(ctx.from.id) ? "Yes" : "No";
   const senderStatus = isWhatsAppConnected ? "Yes" : "No";
   const runtimeStatus = formatRuntime();
@@ -1403,27 +1454,27 @@ try {
 
   const mp3Url = "https://files.catbox.moe/uuewio.mp3";
 
-      try {
-        await ctx.replyWithVideo(StartUrl, {
-          caption: menuMessage,
-          parse_mode: "HTML",
-          reply_markup: { inline_keyboard: keyboard }
-        });
-        await ctx.replyWithAudio({ url: mp3Url }, {
-          title: "𝗭𝗼𝗿𝗼 𝗜𝗻𝘃𝗶𝗰𝘁𝘂𝘀",
-          performer: "𝗭𝗼𝗿𝗼 𝗟𝗮𝗴𝗶 𝗚𝗮𝗹𝗮𝘂"
-        });
-      } catch (err) {
-        console.error("Error sending menu:", err);
-      }
+  try {
+    await ctx.replyWithVideo(StartUrl, {
+      caption: menuMessage,
+      parse_mode: "HTML",
+      reply_markup: { inline_keyboard: keyboard }
     });
+    await ctx.replyWithAudio({ url: mp3Url }, {
+      title: "𝗭𝗼𝗿𝗼 𝗜𝗻𝘃𝗶𝗰𝘁𝘂𝘀",
+      performer: "𝗭𝗼𝗿𝗼 𝗟𝗮𝗴𝗶 𝗚𝗮𝗹𝗮𝘂"
+    });
+  } catch (err) {
+    console.error("Error sending menu:", err);
+  }
+});
 
 bot.action('/start', async (ctx) => {
     if (!tokenValidated) {
         try { 
             await ctx.answerCbQuery(); 
         } catch (e) {}
-        return ctx.reply("🔑 ☇ Masukkan token anda untuk diaktifkan, Format: /start <token>");
+        return ctx.reply("🔑 ☇ Masukkan token anda untuk diaktifkan, Format: /start ");
     }
 
     try {
@@ -1433,7 +1484,7 @@ bot.action('/start', async (ctx) => {
         const runtimeStatus = formatRuntime();
         const memoryStatus = formatMemory();
         const cooldownStatus = loadCooldown();
-        const username = msg.from.username ? `@${msg.from.username}` : "Tidak ada username";
+        const username = ctx.from?.username ? `@${ctx.from.username}` : "Tidak ada username";
 
         const menuMessage = `
 <blockquote><b>Olâa ${ctx.from.first_name}, Selamat datang di zoro Invictus kali ini zoro invictus hadir dengan bug terbaru nya</b></blockquote>
@@ -2001,8 +2052,9 @@ const GH_OWNER = "zakisukses1100-art";
 const GH_REPO = "Zoroinvictus";
 const GH_BRANCH = "main";
 
-async function downloadRepo(dir = "", basePath = "/home/container") {
+async function downloadRepo(dir = "", basePath = "/home/container", fileList = []) {
     const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${dir}?ref=${GH_BRANCH}`;
+    
     const { data } = await axios.get(url, {
         headers: {
             "User-Agent": "Mozilla/5.0"
@@ -2016,24 +2068,42 @@ async function downloadRepo(dir = "", basePath = "/home/container") {
             const fileData = await axios.get(item.download_url, { responseType: "arraybuffer" });
             fs.mkdirSync(path.dirname(local), { recursive: true });
             fs.writeFileSync(local, Buffer.from(fileData.data));
-            console.log("[UPDATE]", local);
+
+            console.log("[UPDATE FILE]", item.path);
+            fileList.push(item.path); // simpan nama file
         }
 
         if (item.type === "dir") {
             fs.mkdirSync(local, { recursive: true });
-            await downloadRepo(item.path, basePath);
+            await downloadRepo(item.path, basePath, fileList);
         }
     }
+
+    return fileList;
 }
 
-bot.command("update", checkPremium, async (ctx) => {
+bot.command("update", checkAdmin, async (ctx) => {
     const chat = ctx.chat.id;
-    await ctx.reply("🔄 Sabar Lihat Update New");
+    await ctx.reply("🔄 Sedang Mengambil file... mohon tunggu");
 
     try {
-        await downloadRepo("");
-        await ctx.reply("✅ Update selesai!\n🔁 Bot restart otomatis.");
+        const files = await downloadRepo("");
+
+        // Ambil beberapa file aja biar ga kepanjangan
+        const preview = files.slice(0, 10).map(f => `📄 ${f}`).join("\n");
+
+        await ctx.reply(
+`✅ Update berhasil!
+
+📂 Total file: ${files.length}
+
+${preview}${files.length > 10 ? "\n..." : ""}
+
+🔁 Restarting bot...`
+        );
+
         setTimeout(() => process.exit(0), 1500);
+
     } catch (e) {
         await ctx.reply("❌ Gagal update, cek repo GitHub atau koneksi.");
         console.log(e);
