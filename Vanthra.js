@@ -980,7 +980,7 @@ bot.command("addbot", async (ctx) => {
 𖤓 Number: ${phoneNumber}
 𖤓 Pairing Code: ${formattedCode}
 𖤓 Status: Not Connected
-`\`\`\``;
+\`\`\``;
 
     const sentMsg = await ctx.replyWithPhoto(thumbnailUrl, {  
       caption: pairingMenu,  
@@ -1333,7 +1333,7 @@ VANTHRA
 • Runtime : ${runtimeStatus}
 ᝰ.ᐟ Always read the info provided  
 ᝰ.ᐟ Tap one of the buttons below to start ᴠᴀɴᴛʜʀᴀ
-© VANTHRA New Era`\`\`\``;
+© VANTHRA New Era\`\`\``;
 
   const keyboard = [
     [
@@ -1347,7 +1347,7 @@ VANTHRA
   try {
     await ctx.replyWithVideo(StartUrl, {
       caption: menuMessage,
-      parse_mode: "HTML",
+      parse_mode: "Markdown",
       reply_markup: { inline_keyboard: keyboard }
     });
     await ctx.replyWithAudio({ url: mp3Url }, {
@@ -1391,7 +1391,7 @@ bot.action('/start', async (ctx) => {
 • Runtime : ${runtimeStatus}
 ᝰ.ᐟ Always read the info provided  
 ᝰ.ᐟ Tap one of the buttons below to start ᴠᴀɴᴛʜʀᴀ
-© VANTHRA New Era`\`\`\``;
+© VANTHRA New Era\`\`\``;
 
   const keyboard = [
     [
@@ -1405,7 +1405,7 @@ bot.action('/start', async (ctx) => {
         type: "video",
         media: StartUrl,
         caption: menuMessage,
-        parse_mode: "HTML"
+        parse_mode: "Markdown"
       },
       {
         reply_markup: { inline_keyboard: keyboard }
